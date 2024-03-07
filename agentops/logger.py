@@ -4,6 +4,12 @@ from .client import Client
 from .event import Event
 
 
+# Enable trace context injection
+# The integration is opt-in and must be enabled explicitly by setting the environment variable OTEL_PYTHON_LOG_CORRELATION to true.
+from opentelemetry.instrumentation.logging import LoggingInstrumentor
+LoggingInstrumentor().instrument(set_logging_format=True, log_level=logging.DEBUG)
+
+
 class AgentOpsLogger():
     """
     A utility class for creating loggers and handlers configured to work with the AgentOps service.

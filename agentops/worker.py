@@ -7,6 +7,8 @@ from .session import Session
 from .helpers import safe_serialize, filter_unjsonable
 from typing import Dict
 
+from opentelemetry import trace
+
 
 class Worker:
     def __init__(self, config: Configuration) -> None:
@@ -18,6 +20,7 @@ class Worker:
         self.thread.daemon = True
         self.thread.start()
         self._session: Session | None = None
+        self.tracer = trace.get_tracer(__name__)
 
     def add_event(self, event: dict) -> None:
         with self.lock:
@@ -38,9 +41,10 @@ class Worker:
 
                 serialized_payload = \
                     safe_serialize(payload).encode("utf-8")
-                HttpClient.post(f'{self.config.endpoint}/events',
-                                serialized_payload,
-                                self.config.api_key)
+                with self.tracer.start_as_current_span("test"):
+                    HttpClient.post(f'{self.config.endpoint}/events',
+                                    serialized_payload,
+                                    self.config.api_key)
 
     def start_session(self, session: Session) -> None:
         self._session = session

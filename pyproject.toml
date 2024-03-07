@@ -6,8 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "agentops"
 version = "0.0.20"
 authors = [
-  { name="Alex Reibman", email="areibman@gmail.com" },
-  { name="Shawn Qiu", email="siyangqiu@gmail.com" }
+  { name="Alex Reibman", email="alex@agentops.ai" },
+  { name="Shawn Qiu", email="shawn@agentops.ai" },
+  { name="Braelyn Boynton", email="braelyn@agentops.ai" },
+  { name="Howard Gil", email="howard@agentops.ai" }
 ]
 description = "Python SDK for developing AI agent evals and observability"
 readme = "README.md"
@@ -21,7 +23,12 @@ dependencies = [
     "requests==2.31.0",
     "pydantic>=1.9.0",
     "packaging>=23.1,<24.0",
-    "toml>=0.10.2"
+    "toml>=0.10.2",
+    "opentelemetry-api>=1.0.0", # TODO: it is recommended that these be optional but the library's main function is observability so makes sense for it to be required. Decide if we need to move
+    "opentelemetry-sdk>=1.0.0", # TODO: pick appropriate versions
+    "opentelemetry-instrumentation-logging>=0.24b0"
+    #"opentelemetry-exporter-otlp>=1.0.0,<2.0.0"
+
 ]
 [project.optional-dependencies]
 dev = [
